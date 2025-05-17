@@ -14,7 +14,6 @@ const App = () => {
         setprogress(progress)
     }
 
-
     return (
         <BrowserRouter>
             <div className="App">

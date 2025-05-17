@@ -10,7 +10,6 @@ const News = (props) => {
     const [loading, setloading] = useState(true);
     const [page, setpage] = useState(1);
     const [totalResults, settotalResults] = useState(0);
-    // document.title = `NewsDonkey - ${this.finalizefirstchar(props.category)}`
 
     const finalizefirstchar = (string) => {
         return string.charAt(0).toUpperCase() + string.slice(1);
@@ -24,7 +23,7 @@ const News = (props) => {
         props.setProgress(40)
         let data = await fetch(url);
         let parseddata = await data.json();
-        // console.log("this is update");
+        console.log("this is update");
         console.log(page);
         // console.log(url);
         // console.log(parseddata.articles);
@@ -32,20 +31,21 @@ const News = (props) => {
         setarticles(parseddata.articles);
         settotalResults(parseddata.totalResults);
         setloading(false);
-        setpage(2);
+
         props.setProgress(100)
     }
     useEffect(() => {
-        updatenews();
+        document.title = `NewsDonkey - ${finalizefirstchar(props.category)}`
+        updatenews();// eslint-disable-next-line 
     }, [])
 
 
     const fetchMoreData = async () => {
         // a fake async api call like which sends
         // 20 more records in 1.5 secs
+        const url = `https://newsapi.org/v2/top-headlines?country=${props.country}&category=${props.category}&apiKey=${props.apikey}&page=${page + 1}&pagesize=${props.pagesize}`;
         setpage(page + 1)
 
-        const url = `https://newsapi.org/v2/top-headlines?country=${props.country}&category=${props.category}&apiKey=${props.apikey}&page=${page}&pagesize=${props.pagesize}`;
         setloading(true)
         let data = await fetch(url);
         let parseddata = await data.json();
@@ -61,7 +61,7 @@ const News = (props) => {
 
     return (
         <div className='container my-3'>
-            <h1 className='text-center' style={{ margin: '30px' }}>NewsDonkey - Top Headlines from {finalizefirstchar(props.category)}</h1>
+            <h1 className='text-center' style={{ marginTop: '100px', marginBottom: '20px' }}>NewsDonkey - Top Headlines from {finalizefirstchar(props.category)}</h1>
             {loading && <Spinner />}
             <InfiniteScroll
                 dataLength={articles.length}
